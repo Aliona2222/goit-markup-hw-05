@@ -8,6 +8,7 @@
   --accent-background-color: #f4f4fd;
   --primary-brand-color: #4d5ae5;
   --pressed-state-color: #404bbf;
+  --transition-dur-and-func: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /**----- Reset default styles  -----*/
@@ -54,12 +55,6 @@ body {
   background-color: #ffffff;
 }
 
-.container {
-  max-width: 1158px;
-  padding: 0 15px;
-  margin: 0 auto;
-}
-
 /* COMPONENTS */
 
 .btn {
@@ -100,10 +95,14 @@ body {
   overflow: hidden;
 }
 
+.container {
+  max-width: 1158px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
 /* HEADER */
 .page-header {
-  padding-top: 24px;
-  padding-bottom: 24px;
   border-bottom: 1px solid var(--light-background-color);
   box-shadow: 0 2px 1px 0 rgba(46, 47, 66, 0.08),
     0 1px 6px 0 rgba(46, 47, 66, 0.08), 0 1px 1px 0 rgba(46, 47, 66, 0.16);
@@ -117,6 +116,7 @@ body {
 .page-nav {
   display: flex;
   align-items: center;
+  max-width: 100%;
 }
 
 .logo {
@@ -145,22 +145,51 @@ body {
 }
 
 .menu-item {
+  position: relative;
 }
 
 .menu-item:not(:last-child) {
   margin-right: 40px;
 }
 .menu-link {
+  display: block;
+  padding-top: 24px;
+  padding-bottom: 24px;
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: 0.02em;
   color: var(--heading-text-color);
+  transition: color --transition-dur-and-func;
 }
 
-.menu-link:hover,
-.menu-link:focus {
+.menu-link:is(:hover, :focus) {
   color: var(--pressed-state-color);
+}
+
+.link.current {
+  color: var(--pressed-state-color);
+}
+
+.nav-active-site::after {
+  position: absolute;
+  display: block;
+  content: '';
+  width: 100%;
+  height: 4px;
+  bottom: -1px;
+  background-color: var(--pressed-state-color);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity --transition-dur-and-func;
+}
+
+.nav-active-site:hover::after {
+  opacity: 1;
+}
+.nav-active-site.current::after {
+  background-color: var(--pressed-state-color);
+  opacity: 1;
 }
 
 .contact-info {
@@ -180,10 +209,10 @@ body {
   line-height: 1.5;
   letter-spacing: 0.02em;
   color: var(--primary-text-color);
+  transition: color --transition-dur-and-func;
 }
 
-.contact-link:hover,
-.contact-link:focus {
+.contact-link:is(:hover, :focus) {
   color: var(--pressed-state-color);
 }
 
@@ -221,11 +250,11 @@ body {
   background: var(--primary-brand-color);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   padding: 16px 32px;
+  transition: background-color --transition-dur-and-func;
 }
 
-.modal-btn:hover,
-.modal-btn:focus {
-  background: var(--pressed-state-color);
+.modal-btn:is(:hover, :focus) {
+  background-color: var(--pressed-state-color);
 }
 
 /* ABOUT-section */
@@ -250,7 +279,6 @@ body {
   align-items: center;
   background-color: var(--accent-background-color);
   border-radius: 4px;
-
   margin-bottom: 8px;
 }
 
@@ -267,6 +295,7 @@ body {
   color: var(--heading-text-color);
   margin-bottom: 8px;
 }
+
 .section-description {
   color: var(--primary-text-color);
   margin-bottom: 8px;
@@ -319,6 +348,7 @@ body {
   border-radius: 0px 0px 4px 4px;
   flex-basis: calc((100% - 72px) / 4);
 }
+
 .img-team {
 }
 
@@ -347,6 +377,7 @@ body {
   width: 40px;
   height: 40px;
 }
+
 .social-list-link {
   display: flex;
   justify-content: center;
@@ -390,15 +421,16 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-
   border: 1px solid #8e8f99;
   border-radius: 4px;
+  transition: border-color --transition-dur-and-func;
 }
 
 .customers-list-icon {
   max-width: 104px;
   max-height: 56px;
   fill: #8e8f99;
+  transition: fill --transition-dur-and-func;
 }
 
 .customers-list-link:is(:hover, :focus) {
@@ -454,7 +486,8 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-brand-color);
+  transition: background-color --transition-dur-and-func;
 }
 .dark-social-icon {
   width: 24px;
@@ -491,6 +524,9 @@ body {
   background: var(--accent-background-color);
   border: 1px solid #e7e9fc;
   padding: 12px 24px;
+  transition: color --transition-dur-and-func,
+    background-color --transition-dur-and-func,
+    border-color --transition-dur-and-func, box-shadow --transition-dur-and-func;
 }
 
 .btn-filter:is(:hover, :focus) {
@@ -515,6 +551,7 @@ body {
 
 .link-project {
   display: block;
+  transition: box-shadow --transition-dur-and-func;
 }
 
 .link-project:is(:hover, :focus) {
@@ -531,4 +568,95 @@ body {
 .border-project {
   border: 1px solid #e7e9fc;
   border-top: none;
+}
+
+.over-img-project {
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  transform: translate(0%, 100%);
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  /*! ЗАПИТАННЯ: --Чому, коли вписую значення змінної 
+  замість "250ms cubic-bezier(0.4, 0, 0.2, 1)",
+  --ОВЕРЛЕЙ перестає виїжджати знизу карточки ???*/
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #f4f4fd;
+  background-color: var(--primary-brand-color);
+  padding: 40px 32px 164px;
+}
+
+.link-project:is(:hover, :focus) .overlay {
+  transform: translate(0%, 0%);
+}
+
+/*  MODAL window */
+
+.backdrop {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity --transition-dur-and-func,
+    visibility --transition-dur-and-func;
+}
+
+.backdrop.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal {
+  position: absolute;
+  width: 408px;
+  height: 576px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(252, 252, 252, 1);
+  border-radius: 4px;
+  transition: box-shadow --transition-dur-and-func;
+}
+
+.modal:is(:hover, :focus) {
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.12),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--light-background-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: box-shadow --transition-dur-and-func;
+}
+
+.modal-close-btn:is(:hover, :focus) {
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12),
+    0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close-btn-icon {
 }
